@@ -20,16 +20,14 @@ int fr()    // prepares freq. graph of integer n
 		freq[i]=0;
 	for(i=0;i<180;i++)
 	{
-	cout<<"res at:"<<res<<endl;
-		if( res%prime[i]==0 )  // if divisible
+		if( res%prime[i]==0  && res!=0 )  // if divisible
 		{
 			freq[i]++;
-			res%=prime[i];
+			res=res/prime[i];
 			i--;        // recheck for this prime
 		}
 	}
-	//cout<<"res at: "<<res<<endl;
-	// leftout res is a prime
+	// leftout res is a prime or 1
 	int ans=1;
 	for( i=0;i<180;i++)
 	{
@@ -40,7 +38,6 @@ int fr()    // prepares freq. graph of integer n
 	}
 	if( res!=1)
 		ans*=(res-1);
-	cout<<"res: "<<res<<endl;
 	
 	return ans;
 }
