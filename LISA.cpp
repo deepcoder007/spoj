@@ -1,28 +1,27 @@
 #include<iostream>
 #include<cstdio>
-#include<cstdint>
 #include<string>
 #include<vector>
 using namespace std;
 
 
 // eval * fist then the + sign
-int64_t min(string in)
+long long int min(string in)
 {
 	//cout<<"Inside min: "<<endl; 
 	register int i;
-	vector<int64_t> v; // the elements of this vector will be added
-	int64_t t1= (int64_t)(in[0]-'0');
+	vector<long long int> v; // the elements of this vector will be added
+	long long int t1= (long long int)(in[0]-'0');
 	for( i=1;i<in.size();i+=2 )
 	{
 		if( in[i]=='*' )
 		{
-			t1*=(int64_t)(in[i+1]-'0');
+			t1*=(long long int)(in[i+1]-'0');
 		}
 		else if( in[i]=='+' )
 		{
 			v.push_back(t1);
-			t1=(int64_t)(in[i+1]-'0');
+			t1=(long long int)(in[i+1]-'0');
 		}
 	}
 	v.push_back(t1);
@@ -36,22 +35,22 @@ int64_t min(string in)
 }
 
 // eval + first and then * sign
-int64_t max(string in)
+long long int max(string in)
 {
 	//cout<<"Inside max: "<<endl;
 	register int i;
-	vector<int64_t> v;  // the elements of this vector are multiplied
-	int64_t t1=(int64_t)(in[0]-'0');
+	vector<long long int> v;  // the elements of this vector are multiplied
+	long long int t1=(long long int)(in[0]-'0');
 	for(i=1;i<in.size();i+=2)
 	{
 		if( in[i]=='+')
 		{
-			t1+=(int64_t)(in[i+1]-'0');
+			t1+=(long long int)(in[i+1]-'0');
 		}
 		else if( in[i]=='*' )
 		{
 			v.push_back(t1);
-			t1=(int64_t)(in[i+1]-'0');
+			t1=(long long int)(in[i+1]-'0');
 		}
 	}
 	v.push_back(t1);
