@@ -2,35 +2,68 @@
 #include<cstdio>
 #include<cstdlib>
 #include<set>
+#include<map>
 #include<string>
 using namespace std;
 
+struct node;
 
-set<string> st[1010];   // array of set of strings
+struct node
+{
+	map<char,node> chars;
+};
+
+
+//Build a suffix array
+class Suffix
+{
+private:
+	map<char,node> head;   // the super node
+	void addS(string in,node& nd) // add string to node nd
+	{
+		if(in.size()==0) return ;
+		register int i;
+		node* chr=&nd;
+		for(i=0;i<in.size();i++)
+		{
+		     chr=&(chr->chars[in[i]]);
+		}
+	}
+	int count;
+public:
+	void add(string in)
+	{
+		addS(in.substr(1) ,head[in[0]]);
+	}
+	void ite(map<char,node> & mp) // iterate this map
+	{
+		map<char,node>::iterator it;
+		for(it=mp.begin() ;it!=mp.end() ;it++)
+		{
+			count++;
+			ite(it->second.chars);
+		}
+	}
+	void print()
+	{
+		count=0;
+		ite(head);
+		cout<<count<<endl;
+	}
+};
+
 
 inline void test()
 {
-	int i,j,k;
-	string in;
-	cin>>in;
-	set<string>::iterator it;
-	int len=in.size();
-	for(i=0;i<1010;i++)
-		st[i].clear();  //initialize
-	st[len].insert(in);   // len is the highest usable index
-	for(i=len-1; i>0;i--)   // for all lengths
-	{
-		for(it=st[i+1].begin(); it!=st[i+1].end() ;it++)
-		{
-			st[i].insert( it->substr(0,i) );
-			st[i].insert( it->substr(1,i) );
-		}
-	}
-	int count=0;
-	for(i=1;i<=len;i++)
-		count+=st[i].size();
-	cout<<count<<endl;
+	string str;
+	Suffix s;
+	cin>>str;
+	int i;
+	for(i=0;i<str.size();i++)
+		s.add(str.substr(i));
+	s.print();
 }
+
 
 int main()
 {
