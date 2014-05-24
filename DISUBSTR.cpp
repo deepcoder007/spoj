@@ -13,15 +13,17 @@ inline void test()
 	int i,j,k;
 	string in;
 	cin>>in;
+	set<string>::iterator it;
 	int len=in.size();
 	for(i=0;i<1010;i++)
 		st[i].clear();  //initialize
 	st[len].insert(in);   // len is the highest usable index
 	for(i=len-1; i>0;i--)   // for all lengths
 	{
-		for(j=0;j<=(len-i);j++)
+		for(it=st[i+1].begin(); it!=st[i+1].end() ;it++)
 		{
-			st[i].insert(in.substr(j,i));
+			st[i].insert( it->substr(0,i) );
+			st[i].insert( it->substr(1,i) );
 		}
 	}
 	int count=0;
