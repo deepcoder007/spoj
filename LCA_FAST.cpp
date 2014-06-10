@@ -27,31 +27,29 @@ inline void test(int &t)  //input is the particular test case
 	}
 	//the leftout node with -1 is the root of tree
 	//set<int> par2;
-	
-	int u,v;
-	int q;
-	scanf("%d",&q);
-	printf("Case %d:\n",t);
-	for(i=1;i<=q;i++)
+	// make path to parent for all nodes
+	map<int,vector<int> > p2p;   //path to parent
+	for(i=1;i<=n;i++)
 	{
-		scanf("%d%d",&u,&v);
-		j=u;
-		par1.clear(); par2.clear();
+		p2p[i]=vector<int>();
+		j=i;
 		do
 		{
-			par1.push_back(j);
-			j=parent[j];
-		}while(j!=-1);  //i.e. the root node
-		j=v;
-		do
-		{
-			par2.push_back(j);
+			p2p[i].push_back(j);
 			j=parent[j];
 		}while(j!=-1);
-		j=par1.size()-1;
-		k=par2.size()-1;
-		for( ; j>=0 && k>=0 && par1[j]==par2[k]; j--,k-- );
-		cout<<par1[j+1]<<endl;
+	}
+	int q;
+	cin>>q; // no. of queries
+	printf("Case %d:\n",t);
+	int u,v;
+	for(i=1;i<=q;i++)
+	{
+		cin>>u>>v;
+		j=p2p[u].size()-1;
+		k=p2p[v].size()-1;
+		for(; j>=0 && k>=0 && p2p[u][j]==p2p[v][k]; j--,k--);
+		cout<<p2p[u][j+1]<<endl;
 	}
 }
 
