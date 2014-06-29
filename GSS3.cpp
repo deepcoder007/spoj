@@ -43,17 +43,59 @@ void find(Tree &res, int Node, int L, int R, int i, int j) {
 	}
 }
 
+void update(int Node,int L,int R,int i,int j)
+{
+	int tmp;
+	if( L==R && R==i )  {
+		a[i]=j;
+		T[Node].maxv = T[Node].sum = T[Node].rval = T[Node].lval = j;
+		return ;
+	}
+	int m=(L+R)/2;
+	if( i<=m ) 
+	{
+		//update in the left sub-tree
+		//printf("calling left update step: %d %d %d\n",L,R,i);
+		//scanf("%d",&tmp);
+		update(Node*2,L,m,i,j);
+	        T[Node].sum = T[Node*2].sum + T[Node*2+1].sum;
+		T[Node].lval = max2(T[2*Node].lval, T[2*Node].sum + T[2*Node+1].lval);
+		T[Node].rval = max2(T[2*Node].rval + T[2*Node+1].sum, T[2*Node+1].rval);
+		T[Node].maxv = max3(T[2*Node].maxv, T[2*Node].rval + T[2*Node+1].lval, T[2*Node+1].maxv);
+		return;
+	}
+	else if( i>m )
+	{
+		//printf("calling right update step: %d %d %d\n",L,R,i);
+		//scanf("%d",&tmp);
+		update(Node*2+1,m+1,R,i,j);
+	        T[Node].sum = T[Node*2].sum + T[Node*2+1].sum;
+		T[Node].lval = max2(T[2*Node].lval, T[2*Node].sum + T[2*Node+1].lval);
+		T[Node].rval = max2(T[2*Node].rval + T[2*Node+1].sum, T[2*Node+1].rval);
+		T[Node].maxv = max3(T[2*Node].maxv, T[2*Node].rval + T[2*Node+1].lval, T[2*Node+1].maxv);
+		return;
+	}
+}
+
 int main() {
-	int n, i, j, m;
+	int n, i, j, m,k;
 	Tree res;
 	scanf("%d", &n);
 	for(i=0; i<n; i++) scanf("%d", &a[i]);
 	init(1, 0, n-1);
 	scanf("%d", &m);
 	while(m--) {
-		scanf("%d%d", &i, &j);
+		scanf("%d%d%d",&k,&i,&j);
+		if( k==1 )
+		{
 		find(res, 1, 0, n-1, --i, --j);
 		printf("%d\n", res.maxv);
+		}
+		else 
+		{
+		//	printf("Starting the update step\n");
+		   update(1,0,n-1,--i,j);
+		}
 	}
 	return 0;
 }
