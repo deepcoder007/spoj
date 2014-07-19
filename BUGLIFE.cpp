@@ -1,63 +1,115 @@
 #include<iostream>
+#include<unordered_set>
 #include<cstdio>
 #include<map>
 #include<vector>
 #include<set>
+#include<queue>
 using namespace std;
 
 
+set<int> arr[2001];
+
 bool test()
 {
-	int N,M;  // n is the number of bugs, m is number of interactions
-	cin>>N>>M;
-	map<int,set<int> > m;
+	int n,m;  // n = no. of bugs , m = no. of interactions
+	cin>>n>>m;
 	int i,j,k;
-	//initialize the set
-	set<int> left;   // the set of elements that are not coloured
-	for(i=1;i<=N;i++)
+	unordered_set<int> left;
+	for(i=1;i<=n;i++)
 	{
-		m[i]=set<int>();
+		arr[i].clear();
 		left.insert(i);
 	}
-	for(i=1;i<=M;i++)
+	while(m--)
 	{
-		cin>>j>>k;
-		m[j].insert(k);
-		m[k].insert(j);
+		cin>>i>>j;
+		arr[i].insert(j);
+		arr[j].insert(i);
 	}
-	int colour[N+1];  // 1 means white, 2 means black 
-	int z;
-	set<int> bag1;
-	set<int> bag2;
-	while(left.size() )  // there are uncoloured bugs
+	//cout<<"The graph is initialized:"<<endl;
+	set<int> white;
+	set<int> black;
+	queue<int> q1,q2;  //q1=white, q2=black
+	set<int>::iterator it;
+	bool tr=true;
+	int base;
+	//int tmp,tmp2;
+	// now start processing
+	while(left.size()!=0)
 	{
-		z=left.begin();   //take out the first bug
-		colour[z]=1;     //by default
-		// now traverse the whole family
-
+		base=*left.begin();
+		white.insert(base);
+		left.erase(base);
+		q1.push(base);   //push the first element
+	//	cout<<"Base ele: "<<base<<endl;
+//		cin>>k;
 		
-
-
-
-
+		while(!q1.empty() || !q2.empty())
+		{
+	//		cout<<"Size of white queue :"<<q1.size()<<endl;
+//			cin>>k;
+			while(!q1.empty())   // there are white elements
+			{
+	//			cout<<"Processing (white) : "<<q1.front()<<endl;
+				it=arr[q1.front()].begin();
+				for(;it!=arr[q1.front()].end();it++)  //over all the links of q1.front() 
+				{
+					if( white.find(*it)!=white.end() )  //i.e. the element is in white
+					{
+						tr=false; //invalid situation
+						break;
+					}
+					else if( black.find(*it)==black.end() )
+					{
+						black.insert(*it);
+						q2.push(*it);
+						left.erase(*it);
+					}
+				}
+				q1.pop();
+			}
+	//		cout<<"Size of black queue :"<<q2.size()<<endl;
+		//	cin>>k;
+			while(!q2.empty())
+			{
+	//			cout<<"Processing (black) : "<<q2.front()<<endl;
+				it=arr[q2.front()].begin();
+				for(;it!=arr[q2.front()].end();it++)
+				{
+					if( black.find(*it)!=black.end())
+					{
+						tr=false;
+						break;
+					}
+					else if(white.find(*it)==white.end())
+					{
+						white.insert(*it);
+						q1.push(*it);
+						left.erase(*it);
+					}
+				}
+				q2.pop();
+			}
+		}
+	}
+	return tr;
 }
-
 
 int main()
 {
 	int n;
 	cin>>n;
 	int i;
-	bool res;
+	bool tk;
 	for(i=1;i<=n;i++)
 	{
-		res=test();
-		printf("Scenario #%d:\n",i);
-		if( res )
-			printf("Suspicious bugs found!\n");
+		tk=test();
+		cout<<"Scenario #"<<i<<":"<<endl;
+		if(tk)
+			cout<<"No suspicious bugs found!"<<endl;
 		else 
-			printf("No suspicious bugs found!\n");
+			cout<<"Suspicious bugs found!"<<endl;
 	}
 	return 0;
 }
-
