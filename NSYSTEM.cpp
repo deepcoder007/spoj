@@ -1,59 +1,105 @@
-#include <iostream>
-#include <cstring>
+#include<iostream>
+#include<cstring>
 using namespace std;
-
-int convertDecimal(string input){
-   int pos = 0, output = 0;
-   
-   pos = input.find('m');
-   if(pos == 0){output += 1000;}
-   else if(pos != string::npos){output += 1000 * (input[0] - '0');}
-
-   pos = input.find('c');
-   if(pos == 0 || input[pos - 1] == 'm'){output += 100;}
-   else if (pos != string::npos){output += 100 * (input[pos - 1] - '0');}
-
-   pos = input.find('x');
-   if(pos == 0 || input[pos - 1] == 'm' || input[pos - 1] == 'x'){output += 10;}
-   else if (pos != string::npos){output += 10 * (input[pos - 1] - '0');}
-
-   pos = input.find('i');
-   if(pos == 0 || input[pos - 1] == 'm' || input[pos-1] == 'c' || input[pos-1] =='x'){output += 1;}
-   else if (pos != string::npos){output += (input[pos - 1] - '0');}
-       
-   return output;
-}
-
-string convertMCXI(int input){
-    string output = ""; int temp = 0;
-
-    temp = input / 1000;
-    if(temp > 0){if(temp > 1){output += ('0' + temp);}; output += 'm';}
-    input %= 1000;
-
-    temp = input / 100;
-    if(temp > 0){if(temp > 1){output += ('0' + temp);}; output += 'c';}
-    input %= 100;
-
-    temp = input / 10;
-    if(temp > 0){if(temp > 1){output += ('0' + temp);};  output += 'x';}
-    input %= 10;
-
-    temp = input;
-    if(temp > 0){if(temp > 1){output += ('0' + temp);};  output += 'i';}
-
-    return output;
-}
-
-
-
-int main(){
-    int numCases;scanf("%d\n",&numCases);
-    while(numCases--){
-        string temp; getline(cin, temp);
-        int separator = temp.find(' ');
-        string first = temp.substr(0,separator), second = temp.substr(separator+1);
-        cout << convertMCXI(convertDecimal(first) + convertDecimal(second)) << endl;
+int main()
+{
+    char a[10],b[10],res[10];
+    int i,j,k;
+    int sum;
+    int suma,sumb;
+    int lena,lenb;
+    int n;
+    int left[4];
+    char mark[4]={'m','c','x','i'};
+    cin>>n;
+    while(n--)
+    {
+        cin>>a;
+        cin>>b;
+        lena=strlen(a);
+        lenb=strlen(b);
+        suma=0;
+        sumb=0;
+        for(i=lena;i>=0;i--)
+        {
+            if(a[i]=='i')
+            {
+                if(a[i-1]>='0'&&a[i-1]<='9')
+                    suma+=(a[i-1]-'0')*1;
+                else
+                    suma+=1;
+            }
+            if(a[i]=='x')
+            {
+                if(a[i-1]>='0'&&a[i-1]<='9')
+                    suma+=(a[i-1]-'0')*10;
+                else
+                    suma+=10;
+            }
+            if(a[i]=='c')
+            {
+                if(a[i-1]>='0'&&a[i-1]<='9')
+                    suma+=(a[i-1]-'0')*100;
+                else
+                    suma+=100;
+            }
+            if(a[i]=='m')
+            {
+                if(a[i-1]>='0'&&a[i-1]<='9')
+                    suma+=(a[i-1]-'0')*1000;
+                else
+                    suma+=1000;
+            }
+        }
+        for(i=lenb;i>=0;i--)
+        {
+            if(b[i]=='i')
+            {
+                if(b[i-1]>='0'&&b[i-1]<='9')
+                    sumb+=(b[i-1]-'0')*1;
+                else
+                    sumb+=1;
+            }
+            if(b[i]=='x')
+            {
+                if(b[i-1]>='0'&&b[i-1]<='9')
+                    sumb+=(b[i-1]-'0')*10;
+                else
+                    sumb+=10;
+            }
+            if(b[i]=='c')
+            {
+                if(b[i-1]>='0'&&b[i-1]<='9')
+                    sumb+=(b[i-1]-'0')*100;
+                else
+                    sumb+=100;
+            }
+            if(b[i]=='m')
+            {
+                if(b[i-1]>='0'&&b[i-1]<='9')
+                    sumb+=(b[i-1]-'0')*1000;
+                else
+                    sumb+=1000;
+            }
+        }
+        sum=suma+sumb;
+        j=3;
+        for(i=0;i<4;i++)
+            left[i]=0;
+        while(sum>0)
+        {
+            left[j]=sum%10;
+            j--;
+            sum=sum/10;
+        }
+        for(j=0;j<4;j++)
+        {
+            if(left[j]==1)
+                cout<<mark[j];
+            if(left[j]>1&&left[j]<=9)
+                cout<<left[j]<<mark[j];
+        }
+        cout<<endl;
     }
     return 0;
 }
