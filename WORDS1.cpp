@@ -1,57 +1,64 @@
 #include<iostream>
-#include<cmath>
-#include<cstring>
-#include<cstdio>
+#include<fstream>
+#include<stdlib.h>
+#include <stdio.h>
+#include<string.h>
+
+#define INPUT "input"
+#define IMP "This is impossible."
+#define FOR(i,n) for(int i=0;i<n;i++)
+#define MAX 1000
+
 using namespace std;
 
-int t,n;
-char str[1010];
-int freq1[26];   // frequency of starting
-int freq2[26];   // frequency of ending
-bool err;        // the error flag
-bool start;      //found the start
-bool end;        //found the end
-
-void test()
-{
-	register int i,j;
-	err=false; start=false;  end=false;
-	scanf("%d",&n);
-	for(i=0;i<26;i++)
-	{	freq1[i]=freq2[i]=0;  }
-	for(i=0;i<n;i++)
-	{
-		scanf("%s",str);
-		j=strlen(str);
-		freq1[str[0]-'a']++;
-		freq2[str[j-1]-'a']++;
-	}
-	for(i=0;i<26;i++)
-	{
-		if(freq1[i]==freq2[i]) continue;
-		else if(freq1[i]==(freq2[i]+1))
-		{
-			if(start) err=true;
-			else start=true;
-		}
-		else if(freq2[i]==(freq1[i]+1))
-		{
-			if(end) err=true;
-			else end=true;
-		}
-		else err=true;
-	}
-	if( err==false )
-	{ printf("Ordering is possible.\n"); }
-	else
-	{ printf("The door cannot be opened.\n"); }
-}
-
+FILE* ifp = fopen(INPUT,"r");
+//FILE* ifp = stdin;
 
 int main()
 {
-	scanf("%d",&t);
-	while(t--)
-		test();
-	return 0;
+    int t,n;
+    fscanf(ifp,"%d",&t);
+
+    FOR(T,t){
+               fscanf(ifp,"%d",&n);
+               int a[26][2] = {0}; //0 = in, 1=out
+
+               FOR(i,n)
+               {
+                      char str[MAX];
+                      fscanf(ifp,"%s",&str);
+
+                      int len = strlen(str);
+                      a[str[0]-'a'][1]++;
+                      a[str[len-1] - 'a'][0]++;
+                }
+
+                int start=0;
+                int end=0;
+                int i=-1;
+
+                /*
+                FOR(i,26)
+                    {
+                            cout<<a[i][0]<<" "<<a[i][1]<<endl;
+                    }
+                */
+
+                while(++i<26)
+                {
+                      if(a[i][0]==a[i][1]+1) //in = out + 1
+                            end++;
+                      else if(a[i][1]== a[i][0] + 1)
+                            start++;
+                      else if(a[i][0]!=a[i][1])
+                            break;
+                }
+
+                /*cout<<"i: "<<i<<" start: "<<start<<" end: "<<end<<endl;*/
+                if(i==26 && start==1 && end==1)
+                    printf("Ordering is possible.\n");
+                else
+                    printf("The door cannot be opened.\n");
+        }
+   return 0;
 }
