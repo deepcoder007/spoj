@@ -2,27 +2,39 @@
 #include<cstdio>
 #include<cstdlib>
 using namespace std;
+// solved using the segment tree
 
 struct data
 {
-	int n1;
-	int n2;
+	int n1;  // stores the highest number
+	int n2;  // stores the second highest number
 };
 
-int arr[100000];
-data T[500000];
+data T[400000];   // the tree to store the data
+int A[100000];    // the original array
 
-void init(int n,int a,int b)    //initialize the segment tree
+inline int max(int a,int b)
 {
-	if(a==b)
-	{	T[n].n1=arr[a]; T[n].n2=0 ; return ; }
-	int mid=a+(b-a)/2;
-	init(n*2,a,mid);
-	init(n*2+1,mid+1,b);
-	if( T[n*2].n1>=T[n*2+1].n1 )
+	if( a>b) return a;
+	else return b;
+}
+
+
+void init(int n,int l,int r)   // init the tree at node n from left l to right r
+{
+	if(l>r) return ;
+	if(l==r)
+	{
+		T[n].n1=A[l]; T[n].n2=0;
+		return ;
+	}
+	int mid=l+(r-l)/2;
+	init(n*2,l,mid);      // left subtree
+	init(n*2+1,mid+1,r);   // right subtree
+	if( T[n*2].n1 >= T[n*2+1].n1 )
 	{
 		T[n].n1=T[n*2].n1;
-		if( T[n*2].n2 >=T[n*2+1].n1 )
+		if( T[n*2].n2 >=T[n*2+1].n1)
 			T[n].n2=T[n*2].n2;
 		else
 			T[n].n2=T[n*2+1].n1;
@@ -30,27 +42,53 @@ void init(int n,int a,int b)    //initialize the segment tree
 	else
 	{
 		T[n].n1=T[n*2+1].n1;
-		if( T[n*2+1].n2 >= T[n*2].n1 )
-			T[n].n2=T[n*2+1].n2;
-		else
+		if( T[n*2].n1 >= T[n*2+1].n2 )
 			T[n].n2=T[n*2].n1;
+		else
+			T[n].n2=T[n*2].n2;
 	}
 }
 
-void update(int n,int l,int r,int i,int x)
+
+// get the highest 2 numbers in the given range
+data query(int n,int l,int r,int x,int y )   // get the highest numbers in the range x and y
 {
-//	cout<<"UPDATE ENTERED"<<endl;
-	if(i>r || i<l ) return;
-	if(l==r && i==l) { T[n].n1=x; return; }
+	if(y<l || x>r ) return (data){0,0};
+	if(x<=l && y>=r ) return T[n];
 	int mid=l+(r-l)/2;
-	if( i <=mid)
+	data d1=query(n*2,l,mid,x,y);    
+	data d2=query(n*2+1,mid+1,r,x,y);
+	data tmp;
+	if(d1.n1 >= d2.n1 )
+	{
+		tmp.n1=d1.n1;
+		if( d1.n2 >= d2.n1 )
+			tmp.n2=d1.n2;
+		else
+			tmp.n2=d2.n1;
+	}
+	else
+	{
+		tmp.n1=d2.n1;
+		if(d1.n1 >= d2.n2 )
+			tmp.n2=d1.n1;
+		else
+			tmp.n2=d2.n2;
+	}
+	return tmp;
+}
+
+void update(int n,int l,int r,int i,int x)   // update the position of element i to x
+{
+	if( i<l ||  i>r ) return;
+	if(i==l && l==r ) {   T[n].n1=x; return ; }
+	int mid=l+(r-l)/2;
 	update(n*2,l,mid,i,x);
-	else
 	update(n*2+1,mid+1,r,i,x);
-	if( T[n*2].n1>=T[n*2+1].n1 )
+	if( T[n*2].n1 >= T[n*2+1].n1 )
 	{
 		T[n].n1=T[n*2].n1;
-		if( T[n*2].n2 >=T[n*2+1].n1 )
+		if( T[n*2].n2 >=T[n*2+1].n1)
 			T[n].n2=T[n*2].n2;
 		else
 			T[n].n2=T[n*2+1].n1;
@@ -58,77 +96,47 @@ void update(int n,int l,int r,int i,int x)
 	else
 	{
 		T[n].n1=T[n*2+1].n1;
-		if( T[n*2+1].n2 >= T[n*2].n1 )
-			T[n].n2=T[n*2+1].n2;
-		else
+		if( T[n*2].n1 >= T[n*2+1].n2 )
 			T[n].n2=T[n*2].n1;
+		else
+			T[n].n2=T[n*2].n2;
 	}
 }
 
-int mx(int n,int l,int r,int x,int y)
-{
-	if(x>r || y<l ) return 0;
-	if( x<=l && y>=r ) return T[n].n1;
-	int mid=l+(r-l)/2;
-	int m1,m2,m3;
-	m1=mx(n*2,l,mid,x,y);
-	m2=mx(n*2+1,mid+1,r,x,y);
-	return (m1>m2)?m1:m2;
-}
-
-int max(int a,int b,int c)
-{
-	if( a>=b && a>=c ) return a;
-	else if( b>=c && b>=a ) return b;
-	else return c;
-}
-
-int query(int n,int l,int r,int x,int y) // find max dual sum between the range x and y
-{
-//	cout<<"QUERY ENTERED"<<endl;
-//	cout<<"range : "<< l <<" "<<r<<" at n = "<<n<<endl;
-	//getchar();
-	if(x>r || y<l ){ return 0; }
-	if( x==l && l==r ) return T[n].n1+T[n].n2;
-	else if( l==r && x!=l ) return 0;
-	if( x==y ) return 0;
-	int mid=l+(r-l)/2;
-	int s1,s2,m1,m2;
-	s1=query(n*2,l,mid,x,y);
-	s2=query(n*2+1,mid+1,r,x,y);
-//	cout<<"REC Query done"<<endl;
-	m1=mx(n*2,l,mid,x,y);
-	m2=mx(n*x+1,mid+1,r,x,y);
-//	cout<<"QUERY EXIT"<<endl;
-	return max(s1,s2,m1+m2);
-}
 
 int main()
 {
 	int n;
-	scanf("%d",&n);
 	register int i;
+	scanf("%d",&n);
 	for(i=0;i<n;i++)
-		scanf("%d",&arr[i]);
+	{ scanf("%d",&A[i]); }
 	init(1,0,n-1);
-	//cout<<"segment tree initialized"<<endl;
 	int q;
-	char ch;
-	int a,b;
 	scanf("%d",&q);
-	//cout<<"START q queries"<<endl;
-	for(i=0;i<q;i++ )
+	char ch;int x,y;
+	data tmp;
+	scanf("%d\n",&q);
+	while(q--)
 	{
-		cout<<"QUERY LOOP"<<endl;
-		scanf("%c%d%d\n",&ch,&a,&b);
-//		scanf("%d %d",&a,&b);
-		if( ch=='Q')  // query 
-		{ printf("%d\n",query(1,0,n-1,a-1,b-1)); }
+		cin>>ch>>x>>y;
+		if(ch=='Q')
+		{
+			tmp=query(1,0,n-1,x-1,y-1);
+			cout<<tmp.n1+tmp.n2<<endl;
+		}
 		else
-		{ update(1,0,n-1,a,b); }
+		{
+			update(1,0,n-1,x-1,y);
+		}
 	}
 	return 0;
 }
+			
+
+
+
+
 
 
 
