@@ -1,0 +1,61 @@
+#include<iostream>
+#include<cstdio>
+#include<cstdlib>
+#include<string>
+using namespace std;
+// this idea uses the segment tree approach which is O(log(n)) technique
+// all arrays are 1-ary
+
+int min(int a,int b)
+{
+	if( a<b) return a;
+	else return b;
+}
+
+int max(int a,int b)
+{
+	if( a>b) return a;
+	else return b;
+}
+
+int T[100000];   // the size of biggest complete bracket in the range
+int L[100000];   // the size of biggest bracket aligned to left and having only one opening bracket ')'
+int R[100000];   // the size of biggest bracket aligned to right and having only one opening brakcet '('
+
+char str[40000];
+
+// n is the node number in T,L and R... x,y are the index of strings in str 
+void init(int n,int x,int y)    // the range that is to be initialized
+{
+	if(x==y)
+	{
+		T[x]=0;
+		if(str[x]==')') {	L[x]=1; R[x]=0; 	}
+		else {	L[x]=0;	R[x]=1;		}
+	}
+	else
+	{
+		mid=(x+y)/2;
+		init(2*n,x,mid);
+		init(2*n+1,mid+1,y);
+		int i,j,k,l;
+		for(i=x,j=x,k=0;i<=y;i++)
+		{
+
+
+
+
+
+
+
+
+
+int main()
+{
+	int i;
+	for(i=1;i<=10;i++)
+	{
+		test(i);
+	}
+	return 0;
+}
