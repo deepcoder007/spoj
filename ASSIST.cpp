@@ -1,61 +1,35 @@
-#include<iostream>
-#include<cstdio>
-#include<cstdlib>
+#include <cstdio>
+#include <list>
+// Brute force works here
+
 using namespace std;
 
-
-bool mask[5101];
-
-
-int main()
-{
-	int i,cur,j,k;
-	for(i=0;i<=3000;i++)
-		mask[i]=true;    // the digit is available
-	cur=1;
-	while(cur<3000)
-	{
-		while(mask[cur]==false)
-			cur++;
-		j=0;
-		for(i=cur+1;i<=3000;i++)
-		{
-			if(mask[i])
-			{
-				j++;
-				if( j==cur )
-				{
-					mask[i]=false;
-					j=0;
-				}
-			}
-		}
-		cur++;
-	}
-	while(1)
-	{
-		cin>>i;
-		if(i==0) break;
-
-		j=0;
-		for(k=1;k<=3000;k++)
-		{
-			if(mask[k]==true)
-			{
-				j++;
-				if(j==i)
-				{
-					cout<<k<<endl;
-					break;
-				}
-			}
+int main(){
+	list<int> L;
+	for(int i = 2;i<=33850;++i) L.push_back(i);
+	
+	int sz = 0, ans[3000];
+	list<int> :: iterator it,it2;
+	
+	while(!L.empty() && sz<3000){
+		ans[sz] = L.front();
+		++sz;
+		
+		int k = L.front(),i = 0;
+		
+		for(it = L.begin();it!=L.end();it = it2,++i){
+			it2 = it; ++it2;
+			if(i%k==0) L.erase(it);
 		}
 	}
+	
+	int n;
+	
+	while(true){
+		scanf("%d",&n);
+		if(n==0) break;
+		printf("%d\n",ans[n-1]);
+	}
+	
 	return 0;
 }
-			
-
-
-	
-
-
