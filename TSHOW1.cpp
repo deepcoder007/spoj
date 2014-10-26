@@ -10,32 +10,31 @@ char str[100];
 
 inline void test()
 {
-	cout<<"ENtered the test case"<<endl;
-	long long int k;
-	cin>>k;
-	cout<<"Input is :"<<k<<endl;
-	k--;
-	int i=0;
-	while(k!=0)
+//	cout<<"Entered the test case"<<endl;
+	long long int n;
+	cin>>n;
+	n++;
+	register int i;
+	for(i=0;n>1;i++)
 	{
-		if(k%2==0)
-		{ str[i++]='5'; }
-		else str[i++]='6';
-		k/=2;
+		str[i]=(n%2==0)?5:6;
+		n/=2;
 	}
-	i--;
-	while(i>=0)
-		cout<<str[i--];
+	while(i--)
+	{
+		if(str[i]==5) printf("5");
+		else printf("6");
+	}
 	cout<<endl;
-	cout<<"Exiting the test case"<<endl;
+//	cout<<"Exiting the test case"<<endl;
 }
 
 
 int main()
 {
 	int n;
-//	scanf("%d\n",&n);
-	cin>>n;
+	scanf("%d\n",&n);
+//	cin>>n;
 	while(n--)
 		test();
 	return 0;
