@@ -1,0 +1,29 @@
+#include<iostream>
+#include<cstdio>
+#include<cstdlib>
+using namespace  std;
+
+long long int n,k;
+int e,t,n;   // expected 1=male, -1 =female
+
+
+
+int main()
+{
+	scanf("%d",&t);
+	while(t--)
+	{
+		scanf("%d%lld",&n,&k);
+		e=1;
+		while(n!=1)
+		{
+			if(k%2==0)  // i.e. second child
+				e*=-1;
+			k=k>>1;
+			n--;
+		}
+		if(e==1)
+			printf("Male\n");
+		else printf("Female\n");
+	}
+}
