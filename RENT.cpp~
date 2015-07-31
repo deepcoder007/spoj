@@ -1,0 +1,79 @@
+#include<iostream>
+#include<cstdio>
+#include<cstdlib>
+#include<set>
+#include<vector>
+#include<algorithm>
+#include<functional>
+#include<map>
+#include<string>
+#include<cstring>
+using namespace std;
+
+inline int min(int a,int b)
+{
+	if( a< b ) return a;
+	else return b;
+}
+
+inline int max(int a,int b)
+{
+	if( a>b ) return a;
+	else return b;
+}
+
+struct node
+{
+	int start;
+	int end;
+	int cost;
+	bool operator < ( node a ) const
+	{
+		return end < a.end;
+	}
+	bool operator > ( node a ) const
+	{
+		return end > a.end ;
+	}
+};
+
+node nd[10000];
+
+class cost   // a class to store the finish time cost at each point
+{
+public:
+	int last;  // index of last element ->  it starts from one
+	int pt[10005];
+	int cost[10005];
+	cost()
+	{
+		last=0;
+		memset(pt,0,sizeof(int)*10000);
+		memset(cost,0,sizeof(int)*10000);
+	}
+	int add(int a,int b)
+	{
+		last++;
+		pt[last]=a;
+		cost[last]=cost[last-1]+b;
+	}
+	int at(int x)  // use binary sear
+	{
+
+
+void test()
+{
+	memset(nd,0,sizeof(nd)*10000);
+	
+
+
+}
+
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while( t-- )
+		test();
+	return 0;
+}	
