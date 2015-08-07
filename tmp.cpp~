@@ -1,0 +1,46 @@
+#include<iostream>
+#include<cstdio>
+#include<cstdlib>
+#include<cstring>
+using namespace std;
+
+inline int max(int i,int j)
+{
+  if( i<j ) return j;
+  else return i;
+}
+
+inline int min(int i,int j)
+{
+  if( i>j ) return j;
+  else return i;
+}
+
+inline int scan()
+{
+  register int neg=1;
+  register int n=0;
+  register char c;
+  c=getchar_unlocked();
+  while( (c<'0' || c>'9') && c!='-' )
+    c=getchar_unlocked();
+  if(c=='-')
+    {
+      neg=-1;
+      c=getchar_unlocked();
+    }
+  while( c>='0' && c<='9' )
+    {
+      n=n*10+c-'0';
+      c=getchar_unlocked();
+    }
+  return n*neg;
+}
+
+int main()
+{
+  int n;
+  n=scan();
+  cout<<n<<endl;
+  return 0;
+}
