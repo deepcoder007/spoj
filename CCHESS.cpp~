@@ -1,0 +1,7 @@
+#include<iostream>
+#include<cstdio>
+#include<cstdlib>
+using namespace std;
+// simple logic -> make a graph of 64 nodes and the corresponding edges of moves with weight being the cost of the 
+
+int main()
