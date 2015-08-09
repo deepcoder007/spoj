@@ -1,0 +1,27 @@
+#include<iostream>
+#include<cstdio>
+#include<cstdlib>
+#include<vector>
+#include<string>
+#include<cstring>
+#include<map>
+#include<queue>
+#include<stack>
+#include<cmath>
+using namespace std;
+// use a DFS/BFS based approach to find arbitrage
+
+inline int scan()
+{
+  register int n=0;
+  register char c;
+  c=getchar_unlocked();
+  while(c<'0' || c>'9')
+    c=getchar_unlocked();
+  while( c>='0' && c<='9' )
+    {
+      n=n*10+c-'0';
+      c=getchar_unlocked();
+    }
+  return n;
+}

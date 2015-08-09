@@ -1,0 +1,107 @@
+#include<iostream>
+#include<cstdio>
+#include<cstdlib>
+#include<cstring>
+#include<stack>
+#include<set>
+#include<queue>
+using namespace std;
+
+inline int scan()
+{
+  register int n=0;
+  register char c;
+  c=getchar_unlocked();
+  while( c<'0' || c>'9')
+    c=getchar_unlocked();
+  while( c>='0' && c<='9' )
+    {
+      n=n*10+c-'0';
+      c=getchar_unlocked();
+    }
+  return n;
+}
+int v,e;
+bool g[5002][5002];  // the graph-> alternate option can be using the bitset
+bool gi[5002][5002];   // inverse of the graph 1
+bool visited[5002];   // used for dfs
+stack<int> stk;
+
+inline void dfs(int n)
+{
+  register int i,j;
+  visited[n]=true;
+  for(i=1;i<=v;i++)
+        if( g[n][i] && !visited[i] )
+	  {
+	    visited[i]=true;
+	    // cout<<"   int dfs : "<<i<<" from : "<<n<<endl;
+	    dfs(i);
+	  }
+  stk.push(n);
+}
+
+int main()
+{
+  register int i,j,k,m,n;
+  int tmp1,tmp2,tmp3;
+  while(1)
+    {
+      v=scan();
+      if( v==0 ) break;
+      e=scan();
+      memset(g,0,sizeof(g));
+      memset(gi,0,sizeof(gi));
+      memset(visited,0,sizeof(visited));
+      for(i=0;i<e;i++)
+	{
+	  m=scan();  n=scan();
+	  g[m][n]=true;
+	  //  g[n][m]=true;
+	}
+      // start the dfs
+      for( i=1 ; i<=v ;i++ )  // for all the vertices
+	  if( !visited[i] )   // if not already visited -> let this be the root for dfs tree
+	    {
+	      // cout<<"dfs called : "<<i<<endl;
+	      dfs(i);
+	    }
+      // our required nodes are the connected components are at the bottom of the stack -> invert it
+      stack<int> stk2;
+      while( !stk.empty() )
+	{
+	  stk2.push(stk.top());
+	  //	  cout<<" stk top :"<<stk.top()<<endl;
+	  stk.pop();
+	}
+      // in stk2 the dfs of top element is enough in gi
+      set<int> st;
+      memset(visited,0,sizeof(visited));
+      tmp1=stk2.top();
+      //      cout<<" Stack top : "<<tmp1<<endl;
+      queue<int> q;
+      q.push(tmp1);
+      visited[tmp1]=true;
+      while(!q.empty())
+	{
+	  tmp1=q.front();
+	  q.pop();
+	  st.insert(tmp1);
+	  for(i=1;i<=v;i++)
+	    {
+	      if( g[tmp1][i] && !visited[i] )
+		{
+		  visited[i]=true;
+		  q.push(i);
+		}
+	    }
+	}
+      // cout<<print the st
+      set<int>::iterator it;
+      for(it=st.begin(); it!=st.end() ;it++ )
+	cout<<*it<<" ";
+      cout<<endl;
+    }
+  return 0;
+}	  
+
