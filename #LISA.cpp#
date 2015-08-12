@@ -96,7 +96,7 @@ int min_count(string in)
 		  if( dp[j][j+i-1] )
 		    dp[j][j+i-1]=min( dp[j][k-1]*dp[k][i+j-1] , dp[j][j+i-1] );
 		  else 
-		    dp[j][j+i-1]=( dp[j][k-1]*dp[k][i+j-1] );
+		    dp[j][j+i-1]=( dp[j][k-1]*dp[k][i+j-]
 		}
 	    }
 	}
