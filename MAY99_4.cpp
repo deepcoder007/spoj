@@ -6,7 +6,7 @@ using namespace std;
 
 int ncr(int n,int r)
 {
-
+  
 
 
 }

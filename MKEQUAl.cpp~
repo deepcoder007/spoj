@@ -1,0 +1,35 @@
+#include<iostream>
+#include<cstdio>
+#include<cstdlib>
+using namespace std;
+
+int n;
+int arr[100000];
+int tmp1,tmp2;
+int sum;
+
+inline void test()
+{
+  cin>>n;
+  register int i,j;
+  i=n;
+  while(i--)
+    {
+      cin>>tmp1;
+      sum+=tmp1;
+    }
+  tmp2=tmp1/n;  
+
+
+
+
+}
+
+int main()
+{
+  int t;
+  cin>>t;
+  while(t--)
+    test();
+  return 0;
+}
