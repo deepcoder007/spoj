@@ -42,12 +42,9 @@ int B[1000000],C[1000000];
 int main(){
     int N;
     readInt(N);
-    
     int A[N];
-    
     for(int i = 0;i<N;++i)
         readInt(A[i]);
-    
     szB = szC = 0;
     
     for(int a = 0;a<N;++a)
@@ -66,15 +63,14 @@ int main(){
     
     int n = 1,m = 1;
     contB[0] = contC[0] = 1;
-    
-    for(int i = 1;i<szB;++i){
+    // storing the count of variable B and C
+    For(int i = 1;i<szB;++i){   
         if(B[i]!=B[n-1]){
             B[n] = B[i];
             contB[n] = 1;
             ++n;
         }else ++contB[n-1];
     }
-    
     for(int i = 1;i<szC;++i){
         if(C[i]!=C[m-1]){
             C[m] = C[i];
@@ -84,7 +80,6 @@ int main(){
     }
     
     long long ans = 0;
-    
     for(int i = 0,j = 0;i<n && j<m;){
         if(B[i]==C[j]) ans += (long long)contB[i]*contC[j];
         
@@ -95,8 +90,6 @@ int main(){
             ++j;
         }
     }
-    
     printf("%lld\n",ans);
-    
     return 0;
 }

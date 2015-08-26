@@ -1,0 +1,38 @@
+#include<iostream>
+#include<cstdio>
+#include<cstdlib>
+#include<cstring>
+#include<string>
+#include<map>
+#include<vector>
+#define debug(n)   cout<<__LINE__<<" #n "<<n<<endl;
+using namespace std;
+
+int a,b;    // the last numbers
+string in,str1,str2,str3;
+map<string,int> code_map;    // maps the 3 digit code to the digit
+map<int,string> rev_code_map;    // reverse maps the digit to the 3 digit string
+int tmp1,tmp2,tmp3;
+
+
+int main()
+{
+  
+  
+  while(1)
+    {
+      cin>>in;
+      if( in[0]=='B' ) return 0;   // i.e. the last case
+      tmp1=in.find('+');   // the first position of the character +
+      str1 = in.substr(0,tmp1);
+      str2 = in.substr(tmp1+1);
+      str2 = str2.substr(0,str2.size()-1);
+      a=b=0;
+      while(st
+
+
+
+
+    }
+  return 0;
+}
