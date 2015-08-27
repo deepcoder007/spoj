@@ -9,9 +9,6 @@
 #include<string>
 #include<cstring>
 #include<utility>
-#include<climits>
-#include<queue>
-#include<deque>
 #define mp make_pair
 #define pb push_back
 #define REP(i,a,b) for(i=a;i<=b;i++)
@@ -55,4 +52,58 @@ inline int scan()
       c=getchar_unlocked();
     }
   return n;
+}
+
+int n;
+int arr[1010];
+int pos[1010];
+int best[1010][1010];  // best[i][j] -> making best array from i to j ( according to the final array
+int bef[1010][1010];
+
+inline void test()
+{
+  register int i,j,k,l;  
+  n=scan();
+  fill(bef,0);
+  REP(i,1,n)
+    arr[i]=scan();  
+
+  REP(i,1,n)
+    pos[arr[i]]=i;
+
+  REP(i,1,n)
+    best[i][i]=pos[i];
+  REP(i,1,n)
+    {
+      bef[i][0]=0;
+      REP(j,1,n)
+	{
+	  bef[i][j]=bef[i][j-1];
+	  if( pos[j]<pos[i] ) bef[i][j]++;
+	}
+    }
+  int x,y;
+  REP(l,2,n)  // for all combination of length of the final array 
+    {
+      REP(i,1,n-l+1)
+	{
+	  j=i+l-1;
+	  
+	  x=best[i+1][j]+l*(pos[i]-(bef[i][j]-bef[i][i]));
+	  y=best[i][j-1]+l*(pos[j]-(bef[j][j-1]-bef[j][i-1]));
+	  if( x<y ) best[i][j]=x;
+	  else best[i][j]=y;
+	}
+    }
+  cout<<best[1][n]<<endl;
+}
+
+
+int main()
+{
+  int t;
+  t=scan();
+  while(t--)
+    test();
+  return 0;
 }

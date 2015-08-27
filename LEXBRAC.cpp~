@@ -9,9 +9,6 @@
 #include<string>
 #include<cstring>
 #include<utility>
-#include<climits>
-#include<queue>
-#include<deque>
 #define mp make_pair
 #define pb push_back
 #define REP(i,a,b) for(i=a;i<=b;i++)
@@ -36,6 +33,18 @@ typedef long double ld;
 typedef vector<int> VI;
 typedef vector<long> VL;
 typedef vector<long long> VLL;
+
+inline int min(int a,int b)
+{
+	if( a< b ) return a;
+	else return b;
+}
+
+inline int max(int a,int b)
+{
+	if( a>b ) return a;
+	else return b;
+}
 
 inline int scan()
 {

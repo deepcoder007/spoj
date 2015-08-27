@@ -9,9 +9,6 @@
 #include<string>
 #include<cstring>
 #include<utility>
-#include<climits>
-#include<queue>
-#include<deque>
 #define mp make_pair
 #define pb push_back
 #define REP(i,a,b) for(i=a;i<=b;i++)
@@ -56,3 +53,11 @@ inline int scan()
     }
   return n;
 }
+
+ll dp[2][250];   // dp[i][j] -> no. of total ways for i'th type bracket using length j
+
+
+int main()
+{
+
+
