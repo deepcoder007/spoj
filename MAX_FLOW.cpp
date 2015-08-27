@@ -12,6 +12,8 @@
 #include<cstring>
 #include<utility>
 #include<climits>
+#include<queue>
+#include<deque>
 #define mp make_pair
 #define pb push_back
 #define REP(i,a,b) for(i=a;i<=b;i++)
@@ -69,11 +71,12 @@ bool vis[100];   // if the node is visited or not
 
 bool haspath()  // returns true if there is an augmented path from source
 {
+  register int i,j;
   int tmp1,tmp2,tmp3;
   queue<int> q;
-  q.insert(s);  
+  q.push(s);  
   fill(p,0);
-  fill(vis,false);  
+  fill(vis,0);  
   vis[s]=true;
   bool res=false;   // if the sink is found
   while(!q.empty())
@@ -90,6 +93,20 @@ bool haspath()  // returns true if there is an augmented path from source
 	      if( tmp2 == t ) res=true;
 	    }
 	}
+    }
+
+  if( !res ) 
+    cout<<__LINE__<<" No path found "<<endl;
+  else
+    {
+      cout<<" Path is : ";
+      tmp1=t;
+      while( tmp1!=s )
+	{
+	  cout<<tmp1<<" <- ";
+	  tmp1=p[tmp1];
+	}
+      cout<<s<<endl;
     }
   return res; // true if sink is approachable
 }
@@ -116,21 +133,20 @@ int main()
     {
       // find the min dist
       tmp1=t;  // the final node
-      tmp2=p[t];   // the earlier node
-      tmp3=rg[tmp2][tmp1];  
-      while(1)
+      tmp3=rg[p[tmp2]][tmp1];  
+      while( tmp1!=s )
 	{
-	  tmp3=min(tmp3,rg[tmp2][tmp1]);
-	  if( tmp2==s ) break; // i.e. the source
-	  tmp2=p[tmp2];
+	  tmp3=min(tmp3,rg[p[tmp1]][tmp1]);
 	  tmp1=p[tmp1];
 	}
+      cout<<"the flow of the network is : "<<tmp3<<endl;
       // now remove tmp3 from the residual capacity
       tmp1=t;
       while( tmp1!=s )
 	{
 	  rg[p[tmp1]][tmp1]-=tmp3;
 	  rg[tmp1][p[tmp1]]+=tmp3;
+	  tmp1=p[tmp1];
 	}
     }
 
