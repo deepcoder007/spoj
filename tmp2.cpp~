@@ -14,7 +14,6 @@
 #include<deque>
 #define mp make_pair
 #define pb push_back
-#define dbg() cout<<"DEBUG"<<endl
 #define REP(i,a,b) for(i=a;i<=b;i++)
 #define FOR(i,a,b) for(i=a;i<b; i++)
 #define sci(x) scanf("%d",&x)
@@ -56,11 +55,4 @@ inline int scan()
       c=getchar_unlocked();
     }
   return n;
-}
-
-int main()
-{
-	int i;
-	FOR(i,0,10);
-return 0;
 }

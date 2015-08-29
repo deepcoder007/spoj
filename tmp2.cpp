@@ -57,10 +57,46 @@ inline int scan()
     }
   return n;
 }
+// adding and multiplying very large numbers
+int size=10000 ;
+int A[1000000],B[10000000];
+									       
+
+void add(int* a,int* b)
+{
+  int i;
+  if( *b>*a ) *a=*b;  // change the number of digits
+  REP(i,1,*a) a[i]+=b[i];
+  ++*a;
+  REP(i,1,*a) a[i+1]+=a[i]/size,a[i]%=size;
+  while( !a[*a] ) --*a;
+}
+
+
+void mult(int* b,int x,int* a)
+{
+  int i;
+  REP(i,1,*b) a[i]=b[i]*x;
+  *a=*b+1;
+
+  REP(i,1,*a) a[i+1]+=a[i]/size, a[i]%=size;
+  while(!a[*a]) --*a;  
+
+}
 
 int main()
 {
-	int i;
-	FOR(i,0,10);
-return 0;
+  fill(A,0),fill(B,0);
+  *A=1;
+  *(A+1)=2;
+  int i,j;
+  FOR(i,1,20)
+    {
+      mult(A,64,B),copy(B,B+(*B)+1,A);
+      cout<<*A<<"  ";
+      for(j=*A;j>0;j--)
+	cout<<A[j];
+      cout<<endl;
+    }
+  return 0;
 }

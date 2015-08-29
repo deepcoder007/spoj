@@ -14,7 +14,6 @@
 #include<deque>
 #define mp make_pair
 #define pb push_back
-#define dbg() cout<<"DEBUG"<<endl
 #define REP(i,a,b) for(i=a;i<=b;i++)
 #define FOR(i,a,b) for(i=a;i<b; i++)
 #define sci(x) scanf("%d",&x)
@@ -58,9 +57,64 @@ inline int scan()
   return n;
 }
 
+int rgraph[10000];    // the map from child to parent
+int count[10000];  
+//map<int,set<int> >  graph;    // the map from parent to all its children
+map<string,int> nmap ;   // mapping name to the index
+map<int,string> rev_nmap:   // map the index to the name
+set<int> ppls;      // the set of found people
+set<int>::iterator sit ;   // the iterator for the set
+
+
+
 int main()
 {
-	int i;
-	FOR(i,0,10);
-return 0;
+  register int i,j;
+  int t,tcount=1;
+  string stmp1,stmp2,stmp3;
+  int tmp1,tmp2,tmp3,idx;
+  int c,t;  
+  sci(t);
+  while(t--)
+    {
+      idx=0;
+      fill(rgraph,-1);
+      //      graph.clear();
+  nmap.clear();  rev_nmap.clear();   ppls.clear();
+      sc2i(c,t);
+      while(c--)
+	{
+	  cin>>stmp1;
+	  if( ppls.find(stmp1)==ppls.end() )  // i.e. not found
+	    {
+	      ppls.insert(stmp1);
+	      nmap[stmp1]=idx;
+	      rev_nmap[idx]=stmp1;
+	      //	      graph[idx]=set<int>();
+	      idx++;
+	    }
+	  cin>>tmp1;   // the count of what to follow
+	  while( tmp1-- )   
+	    {
+	      cin>>stmp2;
+	      if( ppls.find(stmp2)==ppls.end() )
+		{
+		  ppls.insert(stmp2);
+		  nmap[stmp2]=idx;
+		  rev_nmap[idx]=stmp2;
+		  idx++;
+		}
+	      rgraph[nmap[stmp2]]=nmap[stmp1]];
+	  
+	      //      graph[nmap[stmp1]].insert(nmap[stmp2]);
+	}
+     // input complete now start the count
+  
+  if( t==1 )  // i.e. count the parents
+
+
+
+      tcount++;
+    }
+  return 0;
 }
