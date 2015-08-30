@@ -37,6 +37,7 @@ typedef long double ld;
 typedef vector<int> VI;
 typedef vector<long> VL;
 typedef vector<long long> VLL;
+typedef map<int,int> mii;
 
 inline int scan()
 {
@@ -57,6 +58,8 @@ inline int scan()
     }
   return n;
 }
+// often implementing stack and queue via array can be faster and better 
+
 
 int main()
 {
