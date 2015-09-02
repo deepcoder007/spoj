@@ -21,13 +21,13 @@
 #define sc2i(x,y) scanf("%d%d",&x,&y)
 #define scli(x) scanf("%I64d", &x)
 #define scl2i(x,y) scanf("%I64d%I64d",&x,&y)
-#define debug(n) cerr<<__LINE__<<" #n "<<n<<endl
-#define debug2(a,b) cerr<<__LINE__<<" #a "<<a<<" #b "<<b<<endl
-#define debug3(a,b,c)  cerr<<__LINE__<<" #a "<<a<<" #b "<<b<<" #c "<<c<<endl
+#define debug(n) cout<<__LINE__<<" #n "<<n<<endl
+#define debug2(a,b) cout<<__LINE__<<" #a "<<a<<" #b "<<b<<endl
+#define debug3(a,b,c)  cout<<__LINE__<<" #a "<<a<<" #b "<<b<<" #c "<<c<<endl
 #define fill(a,x) memset(a,x,sizeof(a))
-#define trace(x) cerr<<__FUNCTION__<<" : "<<__LINE__<<" #x "<<x<<endl
-#define trace2(x,y) cerr<<__FUNCTION__<<" : "<<__LINE__<<" #x "<<x<<" #y "<<y<<endl
-#define tracea(x,a,b) cerr<<__FUNCTION__<<" : "<<__LINE__<<" #x "; FOR(i,a,b) cout<<x[i]<<" , " ; cout<<endl;
+#define trace(x) cout<<__FUNCTION__<<" : "<<__LINE__<<" #x "<<x<<endl
+#define trace2(x,y) cout<<__FUNCTION__<<" : "<<__LINE__<<" #x "<<x<<" #y "<<y<<endl
+#define tracea(x,a,b) cout<<__FUNCTION__<<" : "<<__LINE__<<" #x "; FOR(i,a,b) cout<<x[i]<<" , " ; cout<<endl;
 using namespace std;
 
 typedef long long ll;
@@ -60,38 +60,47 @@ inline int scan()
 }
 // often implementing stack and queue via array can be faster and better 
 
-int bit[1000];
+int gcd(int a, int b)
+{
+    for (;;)
+    {
+        if (a == 0) return b;
+        b %= a;
+        if (b == 0) return a;
+        a %= b;
+    }
+}
+
 int n;
+int arr[1010][3];
+ll vol[1010];
 
-void add(int x,int a)
-{
-  int idx=x;
-  while(idx<=n)
-    {
-      bit[idx]+=a;
-      idx+=(idx&-idx);
-    }
-}
-
-int get(int x)
-{
-  int idx=x,sum=0;
-  while( idx>0 )
-    {
-      sum+=bit[idx];
-      idx-=(idx&-idx);
-    }
-  return sum;
-}
-  
 
 
 int main()
 {
-  int i;
-  fill(bit,0);
-  n=10;
-  add(4,10);
-  REP(i,1,n) cout<<get(i)<<"  "; cout<<endl;
-  return 0;
+  register int i,j;
+  ll gc,v,ans;
+  while(1)
+    {
+      sci(n);
+      if( n==0 ) return 0;
+      FOR(i,0,n)
+	{
+	  sc2i(arr[i][0],arr[i][1]),sci(arr[i][2]);
+	  vol[i]=arr[i][0]*arr[i][1]*arr[i][2];
+	}
+      gc=gcd(arr[0][0],gcd(arr[0][1],arr[0][2]));
+      FOR(i,1,n)
+	{
+	  gc=gcd(gcd(gc,arr[i][0]),gcd(arr[i][1],arr[i][2]));
+	}
+      v=gc*gc*gc;
+      ans=0;
+      FOR(i,0,n)
+	{
+	  ans+=(vol[i]/v);
+	}
+      cout<<ans<<endl;
+    }  
 }

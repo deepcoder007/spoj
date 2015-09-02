@@ -58,5 +58,70 @@ inline int scan()
     }
   return n;
 }
+// use the 2-d segement tree
+// +1 -> clockwise , -1 -> anti-clockwise
 // often implementing stack and queue via array can be faster and better 
+int m,n;
+int arr[1010][1010];
+ll bit[1010][1010];
+map<char,int> smap;
+map<int,char> rsmap;
+
+void add(int k,int idx ,int val){
+    while (idx <= n){
+        bit[k][idx] += val;
+        idx += (idx & -idx);
+    }
+}
+
+int read(int k,int idx){
+    int sum = 0;
+    while (idx > 0){
+        sum += bit[k][idx];
+        idx -= (idx & -idx);
+    }
+    return sum;
+}
+
+int main()
+{
+  fill(bit,0),fill(arr,0);
+  string stmp;char ci; int x1,y1,x2,y2,t,tmp1,tmp2;
+  register int i,j;
+  smap['N']=0,smap['E']=1,smap['S']=2,smap['W']=3;
+  rsmap[0]='N',rsmap[1]='E',rsmap[2]='S',rsmap[3]='W';
+  sc2i(m,n);
+  FOR(i,0,m)
+    {
+      cin>>stmp;
+      FOR(j,0,n)
+	arr[i+1][j+1]=smap[stmp[j]];
+    }
+  // the array are 1-ary
+  sci(t);
+  while(t--)
+    {
+      cin>>ci;
+      if(ci=='D')
+	{
+	  sc2i(x1,y1);
+	  x2=arr[x1][y1]+read(x1,y1);
+	  cout<<rsmap[x2%4]<<endl;
+	}
+      else if( ci=='C' )
+	{
+	  sc2i(x1,y1),sc2i(x2,y2),sci(tmp1);
+	  REP(i,x1,x2)
+	    if( tmp1==0 )   // i.e. clockwise
+	      {  
+		add(i,y1,1), add(i,y2+1,-1);
+	      }
+	    else if( tmp1==1 )  // i.e. anticlockwise
+	      {
+		add(i,y1,-1), add(i,y2+1,+1);
+	      }
+	}
+    }
+  return 0;
+}    
 
