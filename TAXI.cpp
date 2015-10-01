@@ -59,51 +59,39 @@ inline int scan()
   return n;
 }
 // often implementing stack and queue via array can be faster and better 
-
-int n,m,k;
-map<int,VI > g_list;
-int g[510][510];
-int rg[510][510];  // the backup graph used in activer processing
-int p[510];
-bool vis[510];
-set<int> hk;    // the set that are in the destination
+int p,t,s,c;
+int px[410],py[410],tx[210],ty[210];
+map<int,VI > g;
 int tmp1,tmp2,tmp3;
 
-bool haspath()    // return true if there is a path -> this is the bfs
-{
-  fill(vis,0), fill(p,-1);
-  queue<int> q;   // the queue of the dfs
-  q.push(1), vis[1]=true, p[1]=1;
-  while( !q.empty() )
-    {
-      tmp1=q.top();q.pop();
-
-
-    }
-}
 
 inline void test()
 {
   register int i,j;
-  n=scan(), m=scan(), k=scan();
-  i=(n+1); while(i--) g_list[i]=VI();
-  i=k;
-  hk.clear();
-  while(i--) sci(tmp1), hk.insert(tmp1);
-  fill(g,0), fill(rg,0);
-  i=m;
-  while(i--) sc2i(tmp1,tmp2), g[tmp1][tmp2]=1, rg[tmp1][tmp2]=1 , g[tmp2][tmp1]=1, rg[tmp2][tmp1]=1;  // input the graph
-
-
+  sc2i(p,t),sc2i(s,c);
+  FOR(i,0,p) sc2i(px[i],py[i]);
+  FOR(i,0,t) sc2i(tx[i],ty[i]);
+  g.clear();
+  REP(i,0,p+t+1) g[i]=VI();  // init the graph
+  REP(i,1,p) g[0].pb(i);   // source to person
+  REP(i,p+1,p+t) g[p+t].pb(p+t+1);   // taxi to dest
+  REP(i,1,p)
+    REP(j,p+1,p+t)
+    {
+      tmp1=abs(px[i-1]-tx[j-p-1])+abs(py[i-1]-tx[j-p-1]);
+      tmp1*=400;
+      if( tmp1<=c )   // if edge possible
+	g[i].pb(j);
+    }
 
 
 }
 
 int main()
 {
-  int t;
-  t=scan();
-  while(t--)
+  int tt=scan();
+  while(tt--)
     test();
   return 0;
 }
+

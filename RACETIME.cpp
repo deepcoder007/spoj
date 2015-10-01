@@ -63,6 +63,7 @@ inline int scan()
 // often implementing stack and queue via array can be faster and better 
 
 // using quadratic decomposition
+
 int arr[100009];
 int quad[100009];
 int buf[1000];
@@ -87,9 +88,8 @@ int main()
 	{
 	  sc2i(tmp1,tmp2);
 	  arr[tmp1-1]=tmp2;
-	  tmp3=(int)(tmp1/root);
+	  tmp3=(int)((tmp1-1)/root);
 	  tmp3*=root;
-	  //	  for(tmp3=0;tmp3<(tmp1);tmp3+=root); tmp3-=root;
 	  copy(arr+tmp3,arr+tmp3+root,quad+tmp3);
 	  sort(quad+tmp3,quad+min(n,tmp3+root));
 	}
@@ -98,24 +98,66 @@ int main()
 	  sc2i(tmp1,tmp2),sci(tmp3);
 	  int l,r;
 	  res=0;
-	  l=(int)(tmp1/root),l*=root; r=(int)(tmp2/root) , r*=root;
-	  // add the result of first and last sets
-	  copy(arr+tmp1-1,arr+l+root,buff);
+	  l=(int)((tmp1-1)/root),l*=root; r=(int)((tmp2-1)/root) , r*=root;
+	  // add the result of first  sets
+	  copy(arr+tmp1-1,arr+l+root,buf);
 	  len=l+root-tmp1+1;
-	  sort(buff,buff+len);
+	  sort(buf,buf+len);
 	  l1=0,r1=len-1;
 	  mid=(l1+r1)>>1;
-	  while( buff[mid]<=v )
+	  while(l1<r1 && buf[l1]<=tmp3 )
 	    {
-	      l1=mid+1;
+	      mid=(l1+r1)>>1;
+	      if( buf[mid]<=tmp3 )
+		l1=mid+1;
+	      else
+		r1=mid;
 	    }
+	  if( buf[l1]<=tmp3 )
+	    res+=(l1+1);
 	  else
+	    res+=(l1);
+	  // add the result of the last set
+	  copy(arr+r,arr+tmp2,buf);
+	  len=tmp2-r;
+	  sort(buf,buf+len);
+	  l1=0,r1=len-1;
+	  while( l1<r1 && buf[l1]<=tmp3 )
 	    {
-	      r1=mid;
+	      mid=(l1+r1)>>1;
+	      if( buf[mid]<=tmp3 )
+		l1=mid+1;
+	      else
+		r1=mid;
 	    }
-
-
+	  if( buf[l1]<=tmp3 )
+	    res+=(l1+1);
+	  else 
+	    res+=(l1);
+	  // now take care of rest of the sets
+	  l+=root;
+	  for(;l<r;l+=root)   // for all the center sets
+	    {
+	      cout<<"here "<<endl;
+	      copy(quad+l,quad+l+root,buf);
+	      len=root;
+	      sort(buf,buf+len);
+	      l1=0, r1=len-1;
+	      while( l1<r1 && buf[l1]<=tmp3 )
+		{
+		  mid=(l1+r1)>>1;
+		  if( buf[mid]<=tmp3 )
+		    l1=mid+1;
+		  else
+		    r1=mid;
+		}
+	      if( buf[l1]<=tmp3 )
+		res+=(l1+1);
+	      else  res+=l1;
+	    }
+	  cout<<res<<endl;
 	}
+    }
   return 0;
 }
   
